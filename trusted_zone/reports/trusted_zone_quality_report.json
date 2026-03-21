@@ -1,0 +1,57 @@
+[
+  {
+    "dataset": "pics",
+    "original_rows": 878,
+    "valid_rows": 878,
+    "removed_rows": 0,
+    "rules": {}
+  },
+  {
+    "dataset": "hotels",
+    "original_rows": 446,
+    "valid_rows": 446,
+    "removed_rows": 0,
+    "rules": {}
+  },
+  {
+    "dataset": "weather",
+    "original_rows": 41597,
+    "valid_rows": 20967,
+    "removed_rows": 20630,
+    "rules": {
+      "invalid_radiation": 20630
+    }
+  },
+  {
+    "dataset": "airbnb_neighbourhoods",
+    "original_rows": 73,
+    "valid_rows": 73,
+    "removed_rows": 0,
+    "rules": {}
+  },
+  {
+    "dataset": "airbnb_reviews",
+    "original_rows": 14421,
+    "valid_rows": 14421,
+    "removed_rows": 0,
+    "rules": {}
+  },
+  {
+    "dataset": "airbnb_listings",
+    "original_rows": 19410,
+    "valid_rows": 15256,
+    "removed_rows": 4154,
+    "rules": {
+      "invalid_price": 4154
+    }
+  },
+  {
+    "dataset": "airbnb_calendar",
+    "original_rows": 7084654,
+    "valid_rows": 5568444,
+    "removed_rows": 1516210,
+    "rules": {
+      "filtered_by_missing_or_unknown_listing": 1516210
+    }
+  }
+]

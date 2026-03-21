@@ -1,0 +1,78 @@
+{
+  "top_districts": [
+    {
+      "district_name": "Sant Martí",
+      "neighborhood_name": "Diagonal Mar i el Front Marítim del Poblenou",
+      "listing_count": 128,
+      "avg_price": 261.5156,
+      "neighborhood_tourism_asset_score": 31
+    },
+    {
+      "district_name": "Sant Martí",
+      "neighborhood_name": "el Camp de l'Arpa del Clot",
+      "listing_count": 256,
+      "avg_price": 248.7969,
+      "neighborhood_tourism_asset_score": 10
+    },
+    {
+      "district_name": "Eixample",
+      "neighborhood_name": "la Dreta de l'Eixample",
+      "listing_count": 1941,
+      "avg_price": 248.5281,
+      "neighborhood_tourism_asset_score": 242
+    },
+    {
+      "district_name": "Eixample",
+      "neighborhood_name": "la Nova Esquerra de l'Eixample",
+      "listing_count": 639,
+      "avg_price": 246.7981,
+      "neighborhood_tourism_asset_score": 42
+    },
+    {
+      "district_name": "Sant Martí",
+      "neighborhood_name": "la Vila Olímpica del Poblenou",
+      "listing_count": 134,
+      "avg_price": 229.3284,
+      "neighborhood_tourism_asset_score": 10
+    },
+    {
+      "district_name": "Eixample",
+      "neighborhood_name": "Sant Antoni",
+      "listing_count": 821,
+      "avg_price": 219.028,
+      "neighborhood_tourism_asset_score": 34
+    },
+    {
+      "district_name": "Horta-Guinardó",
+      "neighborhood_name": "la Clota",
+      "listing_count": 4,
+      "avg_price": 215.0,
+      "neighborhood_tourism_asset_score": 3
+    },
+    {
+      "district_name": "Sants-Montjuïc",
+      "neighborhood_name": "Hostafrancs",
+      "listing_count": 155,
+      "avg_price": 208.2903,
+      "neighborhood_tourism_asset_score": 20
+    },
+    {
+      "district_name": "Sants-Montjuïc",
+      "neighborhood_name": "el Poble Sec",
+      "listing_count": 696,
+      "avg_price": 193.0589,
+      "neighborhood_tourism_asset_score": 0
+    },
+    {
+      "district_name": "Eixample",
+      "neighborhood_name": "la Sagrada Família",
+      "listing_count": 886,
+      "avg_price": 190.7562,
+      "neighborhood_tourism_asset_score": 11
+    }
+  ],
+  "generated_plots": [
+    "analysis_zone/visualization/airbnb_avg_price_by_zone.png",
+    "analysis_zone/visualization/daily_temperature.png"
+  ]
+}

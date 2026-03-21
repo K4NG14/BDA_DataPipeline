@@ -1,0 +1,221 @@
+{
+  "visualization": {
+    "top_districts": [
+      {
+        "district_name": "Sant Martí",
+        "neighborhood_name": "Diagonal Mar i el Front Marítim del Poblenou",
+        "listing_count": 128,
+        "avg_price": 261.5156,
+        "neighborhood_tourism_asset_score": 31
+      },
+      {
+        "district_name": "Sant Martí",
+        "neighborhood_name": "el Camp de l'Arpa del Clot",
+        "listing_count": 256,
+        "avg_price": 248.7969,
+        "neighborhood_tourism_asset_score": 10
+      },
+      {
+        "district_name": "Eixample",
+        "neighborhood_name": "la Dreta de l'Eixample",
+        "listing_count": 1941,
+        "avg_price": 248.5281,
+        "neighborhood_tourism_asset_score": 242
+      },
+      {
+        "district_name": "Eixample",
+        "neighborhood_name": "la Nova Esquerra de l'Eixample",
+        "listing_count": 639,
+        "avg_price": 246.7981,
+        "neighborhood_tourism_asset_score": 42
+      },
+      {
+        "district_name": "Sant Martí",
+        "neighborhood_name": "la Vila Olímpica del Poblenou",
+        "listing_count": 134,
+        "avg_price": 229.3284,
+        "neighborhood_tourism_asset_score": 10
+      },
+      {
+        "district_name": "Eixample",
+        "neighborhood_name": "Sant Antoni",
+        "listing_count": 821,
+        "avg_price": 219.028,
+        "neighborhood_tourism_asset_score": 34
+      },
+      {
+        "district_name": "Horta-Guinardó",
+        "neighborhood_name": "la Clota",
+        "listing_count": 4,
+        "avg_price": 215.0,
+        "neighborhood_tourism_asset_score": 3
+      },
+      {
+        "district_name": "Sants-Montjuïc",
+        "neighborhood_name": "Hostafrancs",
+        "listing_count": 155,
+        "avg_price": 208.2903,
+        "neighborhood_tourism_asset_score": 20
+      },
+      {
+        "district_name": "Sants-Montjuïc",
+        "neighborhood_name": "el Poble Sec",
+        "listing_count": 696,
+        "avg_price": 193.0589,
+        "neighborhood_tourism_asset_score": 0
+      },
+      {
+        "district_name": "Eixample",
+        "neighborhood_name": "la Sagrada Família",
+        "listing_count": 886,
+        "avg_price": 190.7562,
+        "neighborhood_tourism_asset_score": 11
+      }
+    ],
+    "generated_plots": [
+      "analysis_zone/visualization/airbnb_avg_price_by_zone.png",
+      "analysis_zone/visualization/daily_temperature.png"
+    ]
+  },
+  "clustering": {
+    "zones_clustered": 55,
+    "k": 4,
+    "inertia": 389.669079,
+    "feature_names": [
+      "avg_price",
+      "median_price",
+      "avg_rating",
+      "avg_accommodates",
+      "avg_bedrooms",
+      "avg_availability_365",
+      "entire_home_ratio",
+      "private_room_ratio",
+      "superhost_ratio",
+      "instant_bookable_ratio",
+      "avg_review_count",
+      "neighborhood_tourism_asset_score",
+      "district_tourism_asset_score"
+    ],
+    "cluster_summary": [
+      {
+        "cluster_id": 0,
+        "zone_count": 5,
+        "districts": [
+          "Ciutat Vella",
+          "Eixample"
+        ],
+        "avg_price": 161.4094,
+        "median_price": 111.9,
+        "avg_rating": 4.6022,
+        "avg_accommodates": 3.2459,
+        "avg_tourism_asset_score": 128.2,
+        "avg_listing_count": 1077.4
+      },
+      {
+        "cluster_id": 1,
+        "zone_count": 21,
+        "districts": [
+          "Gràcia",
+          "Horta-Guinardó",
+          "Nou Barris",
+          "Sant Andreu",
+          "Sant Martí",
+          "Sants-Montjuïc",
+          "Sarrià-Sant Gervasi"
+        ],
+        "avg_price": 133.2396,
+        "median_price": 105.9286,
+        "avg_rating": 4.5993,
+        "avg_accommodates": 3.2956,
+        "avg_tourism_asset_score": 14.8571,
+        "avg_listing_count": 100.1905
+      },
+      {
+        "cluster_id": 2,
+        "zone_count": 11,
+        "districts": [
+          "Horta-Guinardó",
+          "Nou Barris",
+          "Sant Andreu",
+          "Sant Martí",
+          "Sants-Montjuïc"
+        ],
+        "avg_price": 81.884,
+        "median_price": 61.5455,
+        "avg_rating": 4.5834,
+        "avg_accommodates": 2.543,
+        "avg_tourism_asset_score": 10.0,
+        "avg_listing_count": 39.1818
+      },
+      {
+        "cluster_id": 3,
+        "zone_count": 18,
+        "districts": [
+          "Eixample",
+          "Gràcia",
+          "Les Corts",
+          "Sant Martí",
+          "Sants-Montjuïc"
+        ],
+        "avg_price": 195.5573,
+        "median_price": 159.0833,
+        "avg_rating": 4.624,
+        "avg_accommodates": 3.8626,
+        "avg_tourism_asset_score": 31.4444,
+        "avg_listing_count": 402.5556
+      }
+    ],
+    "generated_plots": [
+      "analysis_zone/clustering/cluster_avg_price.png"
+    ]
+  },
+  "prediction": {
+    "target": "booked_rate",
+    "source_table": "airbnb_zone_day_features",
+    "train_rows": 16078,
+    "test_rows": 4020,
+    "models": [
+      {
+        "model": "baseline_mean",
+        "rmse": 0.116122,
+        "mae": 0.092841,
+        "r2": -0.235048
+      },
+      {
+        "model": "linear_regression",
+        "rmse": 0.133788,
+        "mae": 0.1125,
+        "r2": -0.639434
+      },
+      {
+        "model": "knn_regression_k_15",
+        "rmse": 0.069132,
+        "mae": 0.054321,
+        "r2": 0.562255
+      }
+    ],
+    "best_model": "knn_regression_k_15",
+    "feature_names": [
+      "avg_calendar_price",
+      "avg_minimum_nights",
+      "listing_count",
+      "neighborhood_tourism_asset_score",
+      "district_tourism_asset_score",
+      "temperature_avg",
+      "humidity_avg",
+      "radiation_avg",
+      "wind_speed_avg",
+      "rain_total",
+      "month",
+      "day_of_week",
+      "is_weekend"
+    ],
+    "generated_plots": [
+      "analysis_zone/prediction/rmse_comparison.png",
+      "analysis_zone/prediction/best_model_prediction_sample.png"
+    ]
+  },
+  "exploitation_database": {
+    "path": "exploitation_zone/exploitation_zone.duckdb"
+  }
+}

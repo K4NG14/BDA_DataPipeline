@@ -10,6 +10,7 @@ Los objetivos actuales son:
 - normalizar y limpiar los datos
 - construir una base analitica reutilizable
 - analizar como las zonas de Barcelona se relacionan con el precio y las caracteristicas de Airbnb mediante clustering
+- predecir `booked_rate` de Airbnb por zona y dia mediante regresion comparando varios modelos
 
 ## Datasets Integrados
 
@@ -27,12 +28,44 @@ Se han incorporado las siguientes fuentes:
   Relacion barrio-distrito para Airbnb.
 - `reviews_airbnb.csv`
   Reviews de Airbnb. En la pipeline no se guarda review a review, sino que se agregan por `listing_id`.
+- `calendar.csv`
+  Calendario diario de Airbnb por `listing_id` y fecha. Permite construir metricas temporales como `booked_rate`, `availability_rate` y `avg_calendar_price`.
 
-## Script Principal
+## Scripts Modulares Por Fase
 
-Toda la logica esta implementada en:
+La modularizacion ya es real y esta organizada por carpetas de fase. Cada carpeta contiene su propio script y sus propios artefactos:
 
-- [project_pipeline.py](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/project_pipeline.py)
+- [landing_zone](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/landing_zone)
+  Script: [run_landing.py](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/landing_zone/run_landing.py)
+- [formatted_zone](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/formatted_zone)
+  Script: [run_formatted.py](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/formatted_zone/run_formatted.py)
+- [trusted_zone](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/trusted_zone)
+  Script: [run_trusted.py](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/trusted_zone/run_trusted.py)
+- [exploitation_zone](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/exploitation_zone)
+  Script: [run_exploitation.py](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/exploitation_zone/run_exploitation.py)
+- [analysis_zone](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/analysis_zone)
+  Script: [run_analysis.py](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/analysis_zone/run_analysis.py)
+
+Las utilidades compartidas de bajo nivel estan en:
+
+- [pipeline_common.py](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/pipeline_common.py)
+
+## Resultados Por Fase
+
+La ejecucion actual ya ha dejado los artefactos directamente dentro de cada carpeta de fase:
+
+- [landing_zone/reports/landing_manifest.json](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/landing_zone/reports/landing_manifest.json)
+- [formatted_zone/formatted_zone.duckdb](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/formatted_zone/formatted_zone.duckdb)
+- [formatted_zone/reports/formatted_zone_report.json](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/formatted_zone/reports/formatted_zone_report.json)
+- [trusted_zone/trusted_zone.duckdb](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/trusted_zone/trusted_zone.duckdb)
+- [trusted_zone/reports/trusted_zone_quality_report.json](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/trusted_zone/reports/trusted_zone_quality_report.json)
+- [exploitation_zone/exploitation_zone.duckdb](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/exploitation_zone/exploitation_zone.duckdb)
+- [exploitation_zone/reports/exploitation_zone_report.json](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/exploitation_zone/reports/exploitation_zone_report.json)
+- [analysis_zone/visualization](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/analysis_zone/visualization)
+- [analysis_zone/clustering](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/analysis_zone/clustering)
+- [analysis_zone/prediction](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/analysis_zone/prediction)
+
+Los CSV originales se conservan solo en la raiz de [PROYECTO](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO). En las fases ya no se persisten CSV intermedios duplicados; solo quedan bases `DuckDB`, reportes y resultados analiticos.
 
 ## Explicacion Detallada De Las Funciones
 
@@ -259,6 +292,123 @@ Orquesta toda la `formatted zone`:
 - escribe tambien las tablas en `formatted_zone.duckdb`
 - genera `formatted_zone_report.json`
 
+### Funciones De Explotacion Analitica
+
+#### `build_airbnb_zone_day_features(trusted_rows, airbnb_listing_enriched, weather_daily)`
+
+Construye la tabla temporal unificada `airbnb_zone_day_features`, que es la base comun para el analisis temporal y predictivo.
+
+La funcion:
+
+- lee `trusted/airbnb_calendar/airbnb_calendar.csv`
+- hace el cruce por `listing_id` con `airbnb_listing_enriched`
+- hace el cruce por `date` con `weather_daily`
+- agrega por `district_name`, `neighborhood_name` y `date`
+
+Las columnas mas relevantes que genera son:
+
+- `listing_count`
+- `available_count`
+- `booked_count`
+- `availability_rate`
+- `booked_rate`
+- `avg_calendar_price`
+- `avg_minimum_nights`
+- `neighborhood_tourism_asset_score`
+- `district_tourism_asset_score`
+- variables meteorologicas diarias
+
+#### `run_exploitation_zone(trusted_rows)`
+
+Es la fase de integracion semantica. Genera la base final unificada del proyecto en:
+
+- [exploitation_zone.duckdb](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/project_output/exploitation/exploitation_zone.duckdb)
+
+Tablas principales:
+
+- `district_profile`
+- `neighborhood_profile`
+- `weather_daily`
+- `district_day_features`
+- `airbnb_listing_enriched`
+- `airbnb_zone_features`
+- `airbnb_zone_day_features`
+
+Esta es la unica base que consume la parte analitica.
+
+### Funciones De Analisis
+
+#### `run_clustering_pipeline(exploitation_db)`
+
+Lee `airbnb_zone_features` desde `exploitation_zone.duckdb` y aplica un clustering tipo `k-means` implementado en Python.
+
+Usa variables como:
+
+- precio medio y mediano
+- rating
+- capacidad y dormitorios
+- disponibilidad
+- ratios de tipo de alojamiento
+- ratios de superhost e instant booking
+- señal turistica del barrio y del distrito
+
+Salida:
+
+- `analysis/clustering/airbnb_zone_clusters.csv`
+- `analysis/clustering/cluster_summary.json`
+- grafica `cluster_avg_price.png`
+
+#### `run_prediction_pipeline(exploitation_db)`
+
+Lee `airbnb_zone_day_features` desde la misma base unificada de `exploitation`.
+
+Define un problema de regresion:
+
+- target: `booked_rate`
+
+Features utilizadas:
+
+- `avg_calendar_price`
+- `avg_minimum_nights`
+- `listing_count`
+- `neighborhood_tourism_asset_score`
+- `district_tourism_asset_score`
+- `temperature_avg`
+- `humidity_avg`
+- `radiation_avg`
+- `wind_speed_avg`
+- `rain_total`
+- `month`
+- `day_of_week`
+- `is_weekend`
+
+Modelos comparados de menor a mayor complejidad:
+
+- `baseline_mean`
+- `linear_regression`
+- `knn_regression`
+
+Evaluacion:
+
+- `RMSE`
+- `MAE`
+- `R²`
+
+Artefactos generados:
+
+- `analysis/prediction/booked_rate_predictions.csv`
+- `analysis/prediction/model_comparison.json`
+- `analysis/prediction/rmse_comparison.png`
+- `analysis/prediction/best_model_prediction_sample.png`
+
+#### `run_analysis_pipelines(exploitation_db)`
+
+Orquesta la fase analitica completa leyendo solo desde `exploitation_zone.duckdb`:
+
+- visualizacion
+- clustering
+- prediccion
+
 ### Funciones De Calidad Y Trusted Zone
 
 #### `is_barcelona_coordinate(latitude, longitude)`
@@ -358,6 +508,30 @@ Construye la base final unificada `zona-dia`:
 
 Esta es la tabla mas cercana a una base unificada final con componente espacial y temporal.
 
+## Base Unificada En Exploitation
+
+La base unificada final del proyecto debe vivir en la `Exploitation Zone`, porque segun el enunciado es en esta capa donde:
+
+- se fusionan datasets de la `Trusted Zone`
+- se realiza la integracion semantica
+- se exponen las vistas listas para las pipelines analiticas
+
+Por tanto, la base principal para analisis es:
+
+- [exploitation_zone.duckdb](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/project_output/exploitation/exploitation_zone.duckdb)
+
+Esta base contiene las tablas integradas y listas para consumo analitico:
+
+- `district_profile`
+- `neighborhood_profile`
+- `weather_daily`
+- `district_day_features`
+- `airbnb_listing_enriched`
+- `airbnb_zone_features`
+- `airbnb_zone_day_features`
+
+La analitica debe leer de esta base unificada en `exploitation`, no de una capa final adicional separada.
+
 ### Funciones De Exploitation Zone
 
 #### `run_exploitation_zone(trusted_rows)`
@@ -379,13 +553,18 @@ Orquesta la `exploitation zone`:
 
 Genera graficos simples si `matplotlib` esta disponible.
 
-#### `run_visualization_pipeline(exploitation_rows)`
+#### `run_visualization_pipeline(final_db)`
 
 Genera un resumen descriptivo:
 
 - ranking de zonas con mayor precio medio
 - export de resultados a CSV
 - graficos si la libreria grafica esta disponible
+
+Lee los datos desde la base final unificada, en particular desde:
+
+- `airbnb_zone_features`
+- `weather_daily`
 
 ### Funciones Del Clustering
 
@@ -424,11 +603,11 @@ Resume cada cluster:
 - capacidad media
 - intensidad turistica media
 
-#### `run_clustering_pipeline(exploitation_rows)`
+#### `run_clustering_pipeline(final_db)`
 
 Ejecuta el analisis principal del proyecto:
 
-- toma `airbnb_zone_features`
+- toma `airbnb_zone_features` desde la base final
 - filtra zonas con suficiente numero de listings
 - selecciona variables relevantes
 - estandariza
@@ -883,9 +1062,17 @@ Interpretacion:
 
 Estudiar como las zonas de Barcelona afectan al precio y al perfil de los alojamientos Airbnb.
 
+Toda la parte analitica debe consumir:
+
+- [exploitation_zone.duckdb](/Users/joelalfaro/Documents/UPC/Q6/BDA/PROYECTO/project_output/exploitation/exploitation_zone.duckdb)
+
 ### Analisis 1: Visualizacion Descriptiva
 
 Se genera un ranking de zonas por precio medio.
+
+Fuente principal:
+
+- tabla `airbnb_zone_features` de `exploitation_zone.duckdb`
 
 Salida principal:
 
@@ -904,6 +1091,10 @@ Se ha sustituido el analisis anterior de regresion por un clustering de zonas Ai
 
 - una zona = una fila de `airbnb_zone_features`
 - se clusterizan solo zonas con suficiente volumen de listings
+
+Fuente principal:
+
+- tabla `airbnb_zone_features` de `exploitation_zone.duckdb`
 
 #### Variables usadas en el clustering
 

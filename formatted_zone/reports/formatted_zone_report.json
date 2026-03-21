@@ -1,0 +1,13 @@
+{
+  "engine_used": "spark",
+  "datasets": {
+    "pics": 878,
+    "hotels": 446,
+    "weather": 41597,
+    "airbnb_listings": 19410,
+    "airbnb_neighbourhoods": 73,
+    "airbnb_reviews": 14421,
+    "airbnb_calendar": 7084654
+  },
+  "duckdb_database": "formatted_zone/formatted_zone.duckdb"
+}

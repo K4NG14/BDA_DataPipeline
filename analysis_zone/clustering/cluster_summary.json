@@ -1,0 +1,117 @@
+{
+  "feature_names": [
+    "avg_price",
+    "median_price",
+    "avg_rating",
+    "avg_accommodates",
+    "avg_bedrooms",
+    "avg_availability_365",
+    "entire_home_ratio",
+    "private_room_ratio",
+    "superhost_ratio",
+    "instant_bookable_ratio",
+    "avg_review_count",
+    "neighborhood_tourism_asset_score",
+    "district_tourism_asset_score"
+  ],
+  "scaled_feature_means": [
+    145.9242690909091,
+    114.99090909090908,
+    4.604490909090909,
+    3.326109090909091,
+    1.7517854545454548,
+    227.77455636363635,
+    0.6117109090909091,
+    0.3800054545454546,
+    0.22139999999999999,
+    0.3669363636363636,
+    50.59698363636364,
+    29.618181818181817,
+    177.3090909090909
+  ],
+  "scaled_feature_stds": [
+    50.23239703355476,
+    44.78417850790722,
+    0.11426068006214767,
+    0.625448833536286,
+    0.2652354942778085,
+    20.95047731929027,
+    0.16255059930845284,
+    0.166475966508062,
+    0.07751538498318195,
+    0.13011304087199974,
+    22.562580879780604,
+    42.31805585373304,
+    117.3408202595054
+  ],
+  "inertia": 389.669079,
+  "cluster_summary": [
+    {
+      "cluster_id": 0,
+      "zone_count": 5,
+      "districts": [
+        "Ciutat Vella",
+        "Eixample"
+      ],
+      "avg_price": 161.4094,
+      "median_price": 111.9,
+      "avg_rating": 4.6022,
+      "avg_accommodates": 3.2459,
+      "avg_tourism_asset_score": 128.2,
+      "avg_listing_count": 1077.4
+    },
+    {
+      "cluster_id": 1,
+      "zone_count": 21,
+      "districts": [
+        "Gràcia",
+        "Horta-Guinardó",
+        "Nou Barris",
+        "Sant Andreu",
+        "Sant Martí",
+        "Sants-Montjuïc",
+        "Sarrià-Sant Gervasi"
+      ],
+      "avg_price": 133.2396,
+      "median_price": 105.9286,
+      "avg_rating": 4.5993,
+      "avg_accommodates": 3.2956,
+      "avg_tourism_asset_score": 14.8571,
+      "avg_listing_count": 100.1905
+    },
+    {
+      "cluster_id": 2,
+      "zone_count": 11,
+      "districts": [
+        "Horta-Guinardó",
+        "Nou Barris",
+        "Sant Andreu",
+        "Sant Martí",
+        "Sants-Montjuïc"
+      ],
+      "avg_price": 81.884,
+      "median_price": 61.5455,
+      "avg_rating": 4.5834,
+      "avg_accommodates": 2.543,
+      "avg_tourism_asset_score": 10.0,
+      "avg_listing_count": 39.1818
+    },
+    {
+      "cluster_id": 3,
+      "zone_count": 18,
+      "districts": [
+        "Eixample",
+        "Gràcia",
+        "Les Corts",
+        "Sant Martí",
+        "Sants-Montjuïc"
+      ],
+      "avg_price": 195.5573,
+      "median_price": 159.0833,
+      "avg_rating": 4.624,
+      "avg_accommodates": 3.8626,
+      "avg_tourism_asset_score": 31.4444,
+      "avg_listing_count": 402.5556
+    }
+  ]
+}
